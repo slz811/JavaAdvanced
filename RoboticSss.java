@@ -56,9 +56,7 @@ public class RoboticSss {
                     isTaken = true;
                     break;
                 }
-              /*  if (processTimes[i] > 0) {
-                    processTimes[i]--;
-                }*/
+   
             }
             if (!isTaken) {
                 queue.offer(product);
