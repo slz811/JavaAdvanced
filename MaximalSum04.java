@@ -61,23 +61,5 @@ public class MaximalSum04 {
         return sum;
     }
 
-    private static void printMatrix(int[][] matrix) {
-        for (int r = 0; r < matrix.length; r++) {
-            for (int c = 0; c < matrix[r].length; c++) {
-                System.out.print(matrix[r][c] + " ");
-            }
-            System.out.println();
-        }
 
-    }
-
-    private static int[][] createMatrixFromConsole(int size, Scanner scanner) { // Square matrix
-        int[][] matrix = new int[size][size];
-        for (int r = 0; r < size; r++) {
-            for (int c = 0; c < size; c++) {
-                matrix[r][c] = scanner.nextInt();
-            }
-        }
-        return matrix;
-    }
 }
