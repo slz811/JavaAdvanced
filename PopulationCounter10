@@ -1,0 +1,50 @@
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+public class PopulationCounter10 {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        Map<String, Map<String, Long>> countries = new LinkedHashMap<>();
+
+        String input = scanner.nextLine();
+
+        while (!input.equals("report")) {
+            String[] tokens = input.split("\\|");
+            String city = tokens[0];
+            String country = tokens[1];
+            long populationCity = Long.parseLong(tokens[2]);
+
+            countries.putIfAbsent(country, new LinkedHashMap<>());
+            countries.get(country).put(city, populationCity);
+
+            input = scanner.nextLine();
+        }
+
+        Map<String, Long> countiesTotal = new LinkedHashMap<>();
+
+        for (Map.Entry<String, Map<String, Long>> entry : countries.entrySet()) {
+            long totalPopulation = getTotalPopulation(entry.getValue());
+            countiesTotal.put(entry.getKey(), totalPopulation);
+        }
+
+
+        countiesTotal.entrySet().stream().sorted((a, b) -> Long.compare(b.getValue(), a.getValue()))
+                .forEach(element -> {
+                    System.out.printf("%s (total population: %d)%n", element.getKey(), element.getValue());
+                    countries.get(element.getKey()).entrySet().stream().sorted((x, y) -> Long.compare(y.getValue(), x.getValue())).forEach(w -> {
+                        System.out.printf("=>%s: %d%n", w.getKey(), w.getValue());
+                    });
+                });
+    }
+
+    public static long getTotalPopulation(Map<String, Long> countries) {
+        long totalPopulation = 0;
+        for (Map.Entry<String, Long> entry : countries.entrySet()) {
+            totalPopulation += entry.getValue();
+        }
+        return totalPopulation;
+    }
+
+}
