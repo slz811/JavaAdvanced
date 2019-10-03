@@ -1,0 +1,31 @@
+import java.util.*;
+
+public class LogsAggregator11 {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        Map<String, Set<String>> usersIP = new TreeMap<>();
+        Map<String, Integer> usersDuration = new TreeMap<>();
+
+        int n = Integer.parseInt(scanner.nextLine());
+
+        while (n-- > 0) {
+            String input[] = scanner.nextLine().split("\\s+");
+            String ip = input[0];
+            String username = input[1];
+            int duration = Integer.parseInt(input[2]);
+
+            usersIP.putIfAbsent(username, new TreeSet<>());
+            usersIP.get(username).add(ip);
+
+            usersDuration.putIfAbsent(username, 0);
+            usersDuration.put(username, usersDuration.get(username) + duration);
+        }
+
+
+        usersDuration.forEach((key, value) -> {
+            System.out.printf("%n%s: %d ", key, value);
+            System.out.print(String.join(", ", usersIP.get(key).toString()));
+        });
+    }
+}
