@@ -1,0 +1,69 @@
+import java.util.Scanner;
+import java.util.TreeMap;
+import java.util.Map;
+
+public class LegendaryFarming12 {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        Map<String, Integer> keyMaterials = new TreeMap<>();
+        keyMaterials.put("shards",0);
+        keyMaterials.put("fragments",0);
+        keyMaterials.put("motes",0);
+        
+        Map<String, Integer> junks = new TreeMap<>();
+        boolean hasWinner = false;
+        String winnersItem = "";
+
+        while (!hasWinner) {
+            int count = scanner.nextInt();
+            String item = scanner.next().toLowerCase();
+            if (item.equals("shards") || item.equals("fragments") || item.equals("motes")) {
+                //keyMaterials.putIfAbsent(item, 0);
+                keyMaterials.put(item, keyMaterials.get(item) + count);
+                int quantity = keyMaterials.get(item);
+
+                if (itemObtained(quantity)) {
+                    winnersItem = item;
+                    keyMaterials.put(item, keyMaterials.get(item) - 250);
+                    hasWinner = true;
+                }
+
+            } else {
+                junks.putIfAbsent(item, 0);
+                junks.put(item, junks.get(item) + count);
+            }
+        }
+
+        System.out.println(String.format("%s obtained!", getWinner(winnersItem)));
+        keyMaterials.entrySet().stream().sorted((a, b) -> Integer.compare(b.getValue(), a.getValue()))
+                .forEach(entry -> {
+                    System.out.println(String.format("%s: %d", entry.getKey(), entry.getValue()));
+                });
+        junks.entrySet().forEach(entry -> {
+                    System.out.println(String.format("%s: %d", entry.getKey(), entry.getValue()));
+                });
+
+    }
+
+    private static String getWinner(String winnersItem) {
+        String winner = "";
+        switch (winnersItem) {
+            case "shards":
+                winner = "Shadowmourne";
+                break;
+            case "fragments":
+                winner = "Valanyr";
+                break;
+            case "motes":
+                winner = "Dragonwrath";
+                break;
+        }
+        return winner;
+    }
+
+    private static boolean itemObtained(int quantity) {
+        return quantity >= 250;
+    }
+}
