@@ -1,0 +1,49 @@
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class SrubskoUnleashed13 {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        Map<String, Map<String, Long>> venuesArtistIncomes = new LinkedHashMap<>();
+
+        String regex = "(.*?) @(.*?) (\\d+) (\\d+)";
+        Pattern pattern = Pattern.compile(regex);
+
+        String input = scanner.nextLine();
+        while (!input.equals("End")) {
+            Matcher matcher = pattern.matcher(input);
+            while (matcher.find()) {
+                String artist = matcher.group(1);
+                String venue = matcher.group(2);
+                long ticketPrice = Long.parseLong(matcher.group(3));
+                long ticketCount = Long.parseLong(matcher.group(4));
+                long incomes = ticketCount * ticketPrice;
+
+
+                venuesArtistIncomes.putIfAbsent(venue, new LinkedHashMap<>());
+                venuesArtistIncomes.get(venue).putIfAbsent(artist, 0L);
+                long totalIncomes = venuesArtistIncomes.get(venue).get(artist) + incomes;
+                venuesArtistIncomes.get(venue).put(artist, totalIncomes);
+
+            }
+
+
+            input = scanner.nextLine();
+        }
+
+
+        venuesArtistIncomes.entrySet().stream().forEach(element -> {
+            System.out.println(String.format("%s", element.getKey()));
+            element.getValue().entrySet().stream()
+                    .sorted((a, b) -> Long.compare(b.getValue(), a.getValue())).forEach(artist -> {
+                System.out.println(String.format("#  %s -> %d", artist.getKey(), artist.getValue()));
+            });
+
+        });
+    }
+
+
+}
